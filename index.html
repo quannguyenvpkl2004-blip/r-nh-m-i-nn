@@ -3,352 +3,267 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gửi em bé Nhím...</title>
+    <title>Gửi Phương... 🌕✨</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap');
-
-        * { box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
-            margin: 0; padding: 0; background-color: #ffe6eb; color: #333; overflow-x: hidden;
-            display: flex; justify-content: center; align-items: center; min-height: 100vh;
+            /* Nền trời đêm gradient */
+            background: linear-gradient(to bottom, #020111 0%, #20124d 60%, #000022 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Baloo 2', 'Comic Sans MS', sans-serif;
+            overflow: hidden;
+            color: white;
+            position: relative;
         }
 
-        .petal {
-            position: absolute; top: -10px; background-color: #ffb7c5; border-radius: 15px 0 15px 0;
-            opacity: 0.6; animation: fall linear infinite; pointer-events: none; z-index: 0;
+        /* ----- MÀN HÌNH CHỜ (Bấm vào để phát nhạc) ----- */
+        #start-screen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            cursor: pointer;
+            transition: opacity 1s ease;
         }
 
-        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
-
-        .container {
-            background: rgba(255, 255, 255, 0.95); width: 90%; max-width: 450px; padding: 30px;
-            border-radius: 20px; box-shadow: 0 10px 30px rgba(255, 182, 193, 0.3);
-            text-align: center; z-index: 1; position: relative;
+        .btn-start {
+            font-size: 1.5rem;
+            padding: 15px 30px;
+            border-radius: 50px;
+            background: linear-gradient(45deg, #ff99cc, #ff66b2);
+            color: white;
+            border: none;
+            box-shadow: 0 0 20px #ff66b2;
+            animation: pulseBtn 1.5s infinite alternate;
+            pointer-events: none; /* Để click dính vào start-screen */
         }
 
-        .step { display: none; }
-        .step.active { display: block; animation: fadeIn 0.5s; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-
-        .polaroid {
-            background: white; padding: 10px 10px 20px 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            margin: 0 auto 20px; width: 80%; transform: rotate(-3deg);
+        @keyframes pulseBtn {
+            0% { transform: scale(1); box-shadow: 0 0 10px #ff66b2; }
+            100% { transform: scale(1.1); box-shadow: 0 0 30px #ff3399; }
         }
-        .polaroid img { width: 100%; display: block; }
 
-        h2 { color: #555; font-size: 22px; margin-bottom: 5px; font-weight: 700; }
-        .subtitle { color: #888; font-size: 14px; margin-bottom: 25px; font-weight: 500; }
-
-        .btn-group { display: flex; justify-content: space-around; align-items: center; position: relative; min-height: 60px; }
-        button {
-            background-color: #ff4d6d; color: white; border: none; padding: 12px 24px;
-            border-radius: 30px; font-size: 16px; font-weight: 600; cursor: pointer;
-            transition: 0.2s; box-shadow: 0 4px 10px rgba(255, 77, 109, 0.3);
+        /* ----- BẦU TRỜI SAO VÀ TRĂNG RẰM ----- */
+        #stars-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0;
         }
-        button:hover { background-color: #ff2a55; }
-        button:disabled { background-color: #ffa3b5; cursor: not-allowed; }
-        #btnNo { background-color: #f1f1f1; color: #555; position: relative; }
 
-        .form-group { text-align: left; margin-bottom: 20px; }
-        .form-group > label { display: block; font-weight: 700; margin-bottom: 10px; color: #555; font-size: 15px;}
-        
-        /* Giao diện Lịch (Calendar) */
-        .custom-calendar {
-            background: #fdfdfd; border: 1px solid #eaeaea; border-radius: 15px; padding: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle infinite alternate;
         }
-        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-weight: 700; color: #ff4d6d; }
-        .cal-header button { background: none; border: none; color: #ff4d6d; font-size: 18px; padding: 0 10px; box-shadow: none; }
-        .cal-header button:hover { background: #ffe6eb; border-radius: 50%; }
-        .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 12px; font-weight: 700; color: #555; margin-bottom: 10px; }
-        .cal-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
-        .cal-day { padding: 8px 0; font-size: 14px; color: #666; cursor: pointer; border-radius: 10px; position: relative; font-weight: 600; }
-        .cal-day:hover { background-color: #ffe6eb; }
-        .cal-day.empty { cursor: default; }
-        .cal-day.selected { color: #333; }
-        .cal-day.selected::after { content: "•"; color: #ff4d6d; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%); font-size: 20px; }
 
-        /* Giao diện Chọn Giờ (Time Picker) */
-        .time-picker {
-            background: #fdfdfd; border: 1px solid #eaeaea; border-radius: 15px; padding: 20px;
-            display: flex; justify-content: center; align-items: center; gap: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        @keyframes twinkle {
+            0% { opacity: 0.2; box-shadow: none; }
+            100% { opacity: 1; box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8); }
         }
-        .time-box {
-            background: #ffe6eb; color: #ff4d6d; font-size: 24px; font-weight: bold; padding: 10px 15px;
-            border-radius: 12px; border: none; width: 70px; text-align: center; outline: none;
-        }
-        .time-box::-webkit-outer-spin-button, .time-box::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-        .time-separator { font-size: 24px; font-weight: bold; color: #ff4d6d; }
 
-        /* Chọn món ăn */
-        .radio-group { display: flex; flex-direction: column; gap: 10px; }
-        .radio-item {
-            background: #fff0f3; padding: 12px 15px; border-radius: 10px; border: 1px solid #ffccd5;
-            cursor: pointer; display: flex; align-items: flex-start; gap: 10px;
+        .moon {
+            position: absolute;
+            top: 10%;
+            right: 15%;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle at 30% 30%, #fff9e6, #fde482, #d4af37);
+            border-radius: 50%;
+            box-shadow: 0 0 50px 10px rgba(253, 228, 130, 0.6), 
+                        0 0 100px 30px rgba(253, 228, 130, 0.3);
+            z-index: 1;
+            animation: moonFloat 6s ease-in-out infinite alternate;
         }
-        .radio-item input { margin-top: 5px; }
-        .food-info { display: flex; flex-direction: column; }
-        .food-name { font-weight: 700; font-size: 15px; color: #333; margin-bottom: 3px; }
-        .food-note { font-size: 13px; color: #888; font-weight: 500; }
 
-        .receipt { background: #fff; border: 2px dashed #ffccd5; padding: 20px; border-radius: 10px; text-align: left; margin-bottom: 20px; }
-        .receipt-row { display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px dotted #ccc; padding-bottom: 5px;}
-        .receipt-row strong { color: #ff4d6d; text-align: right; max-width: 60%; }
-        
-        #loadingMsg { display: none; color: #ff4d6d; font-size: 14px; margin-top: 10px; font-weight: bold; }
+        @keyframes moonFloat {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-15px); }
+        }
+
+        /* ----- HIỆU ỨNG CHỮ ----- */
+        #text-container {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-align: center;
+            padding: 0 20px;
+            z-index: 10;
+            opacity: 0;
+            transform: scale(0.8) translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.5);
+            max-width: 80%;
+        }
+
+        .show-text {
+            opacity: 1 !important;
+            transform: scale(1) translateY(0) !important;
+        }
+
+        .final-text {
+            font-size: 3.5rem !important;
+            color: #ffccff;
+            text-shadow: 0 0 15px #ff66b2, 0 0 30px #ff1a8c, 0 0 50px #ff0080;
+            animation: floatText 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatText {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(-10px) scale(1.05); }
+        }
+
+        /* Vùng chứa sao rơi lúc cuối */
+        #magic-sky {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 20; pointer-events: none;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- BƯỚC 1 -->
-        <div id="step1" class="step active">
-            <h2 style="color: #ff4d6d;">Anh có điều muốn nói với emm...</h2>
-            <p style="font-weight: 500; color: #666;">Không phải cô gái nào cũng tốt bụng và dễ thương, nên anh muốn rủ em đi ăn có được khum? ❤️</p>
-            
-            <div class="polaroid">
-                <!-- ĐÃ ĐỔI TÊN FILE ẢNH Ở ĐÂY -->
-                <img src="anh-meo.jpg" alt="Cute cat">
-            </div>
+    <!-- BỘ PHÁT NHẠC (Mình dùng 1 bản nhạc Lofi Chill mặc định) -->
+    <!-- Nếu muốn đổi nhạc, bạn chỉ cần thay link trong thẻ src="..." bên dưới -->
+    <audio id="bg-music" loop>
+        <source <source src="nhacnen.mp3" type="audio/mpeg">>
+    </audio>
 
-            <p style="font-weight: bold; font-size: 18px; color: #333;">Hôm tới mình đi ăn với nhau được khum? 🥺</p>
-            
-            <div class="btn-group">
-                <button id="btnYes" onclick="nextStep(2)">Dạ cóoo ❤️</button>
-                <button id="btnNo">Để em nghĩ đã 😋</button>
-            </div>
-        </div>
-
-        <!-- BƯỚC 2: CHỌN NGÀY GIỜ VÀ MÓN -->
-        <div id="step2" class="step">
-            <h2>Mình chốt kèo thôi nào</h2>
-            <p class="subtitle">Em chọn ngày, giờ với món em thích nha, anh chiều hết luôn 💕</p>
-            
-            <div class="form-group">
-                <label>Chọn ngày</label>
-                <div class="custom-calendar">
-                    <div class="cal-header">
-                        <button onclick="changeMonth(-1)">&lt;</button>
-                        <span id="monthYearText">Tháng 9 2026</span>
-                        <button onclick="changeMonth(1)">&gt;</button>
-                    </div>
-                    <div class="cal-weekdays">
-                        <span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span>T7</span><span>CN</span>
-                    </div>
-                    <div class="cal-days" id="calDays"></div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Chọn giờ</label>
-                <div class="time-picker">
-                    <input type="number" id="hourInput" class="time-box" min="0" max="23" value="19" placeholder="00">
-                    <span class="time-separator">:</span>
-                    <input type="number" id="minuteInput" class="time-box" min="0" max="59" value="30" placeholder="00">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Chọn món em muốn ăn</label>
-                <div class="radio-group">
-                    <label class="radio-item">
-                        <input type="radio" name="food" value="Đồ Nhật" checked>
-                        <div class="food-info">
-                            <span class="food-name">Đồ Nhật 🍣</span>
-                            <span class="food-note">Ăn thanh đạm xíu nè cho nhẹ bụng</span>
-                        </div>
-                    </label>
-                    <label class="radio-item">
-                        <input type="radio" name="food" value="Nướng">
-                        <div class="food-info">
-                            <span class="food-name">Nướng 🥩</span>
-                            <span class="food-note">Xèo xèo xèo, quấn xà lách ngập mồm nha</span>
-                        </div>
-                    </label>
-                    <label class="radio-item">
-                        <input type="radio" name="food" value="Lẩu">
-                        <div class="food-info">
-                            <span class="food-name">Lẩu 🍲</span>
-                            <span class="food-note">Ngồi lai rai nói chuyện, ấm áp tình ta</span>
-                        </div>
-                    </label>
-                    <label class="radio-item">
-                        <input type="radio" name="food" value="Nem Nướng">
-                        <div class="food-info">
-                            <span class="food-name">Nem Nướng 🌯</span>
-                            <span class="food-note">Cuốn cuốn chấm chấm siêu dính luôn</span>
-                        </div>
-                    </label>
-                    <label class="radio-item">
-                        <input type="radio" name="food" value="Cuốn">
-                        <div class="food-info">
-                            <span class="food-name">Cuốn 🥒</span>
-                            <span class="food-note">Ăn healthy nhiều rau giữ dáng cho em bé nè</span>
-                        </div>
-                    </label>
-                </div>
-            </div>
-
-            <button id="submitBtn" onclick="finishForm()" style="width: 100%; margin-top: 10px;">Xác nhận lựa chọn ❤️</button>
-            <div id="loadingMsg">Đang gửi lời nhắn cho Wân... Đợi xíu nha 🥺</div>
-        </div>
-
-        <!-- BƯỚC 3: KẾT QUẢ -->
-        <div id="step3" class="step">
-            <h2>Được rùiiiii ✨</h2>
-            <p id="summaryText" style="font-weight: 600; color: #555;"></p>
-            
-            <div class="receipt">
-                <div class="receipt-row"><span>Người mời:</span> <strong>Wân ❤️</strong></div>
-                <div class="receipt-row"><span>Người được mời:</span> <strong>Em bé Nhím 🥺</strong></div>
-                <div class="receipt-row"><span>Ngày hẹn:</span> <strong id="resDate">...</strong></div>
-                <div class="receipt-row"><span>Giờ hẹn:</span> <strong id="resTime">...</strong></div>
-                <div class="receipt-row"><span>Món chốt:</span> <strong id="resFood">...</strong></div>
-            </div>
-            
-            <p style="font-size: 14px; color: #ff4d6d; font-weight: bold; margin-bottom: 20px;">(Wân đã nhận được tin nhắn rùi nha! 🥰)</p>
-
-        </div>
+    <!-- MÀN HÌNH CHỜ CLICK -->
+    <div id="start-screen">
+        <h2 style="margin-bottom: 20px; color: #fff;">Có một điều bí mật dành cho cậu...</h2>
+        <div class="btn-start">Chạm vào đây để mở 🎁</div>
     </div>
 
+    <!-- BỐI CẢNH NỀN -->
+    <div id="stars-container"></div>
+    <div class="moon"></div>
+
+    <!-- CHỮ HIỂN THỊ -->
+    <div id="text-container"></div>
+
+    <!-- KHU VỰC HIỆU ỨNG RƠI KHI KẾT THÚC -->
+    <div id="magic-sky"></div>
+
     <script>
-        // ---------------- THAY ĐỔI EMAIL CỦA BẠN Ở ĐÂY ----------------
-        const YOUR_EMAIL = "quannguyenvpkl2004@gmail.com"; 
-        // --------------------------------------------------------------
-
-        const btnNo = document.getElementById('btnNo');
-        function moveButton(e) {
-            if(e.type === 'touchstart') e.preventDefault();
-            btnNo.style.position = 'absolute';
-            const containerBox = document.querySelector('.container').getBoundingClientRect();
-            const randomX = Math.floor(Math.random() * (containerBox.width - btnNo.clientWidth));
-            const randomY = Math.floor(Math.random() * (containerBox.height - btnNo.clientHeight));
-            btnNo.style.left = randomX + 'px';
-            btnNo.style.top = randomY + 'px';
-        }
-        btnNo.addEventListener('mouseover', moveButton);
-        btnNo.addEventListener('touchstart', moveButton);
-
-        function nextStep(step) {
-            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-            document.getElementById('step' + step).classList.add('active');
-            if(step === 1) {
-                btnNo.style.position = 'relative'; btnNo.style.left = 'auto'; btnNo.style.top = 'auto';
-            }
+        // 1. TẠO BẦU TRỜI ĐẦY SAO LẤP LÁNH
+        const starsContainer = document.getElementById('stars-container');
+        const numberOfStars = 150; // Số lượng sao
+        
+        for (let i = 0; i < numberOfStars; i++) {
+            let star = document.createElement('div');
+            star.className = 'star';
+            
+            // Kích thước ngẫu nhiên (từ 1px đến 3px)
+            let size = Math.random() * 2 + 1;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            
+            // Vị trí ngẫu nhiên trên màn hình
+            star.style.left = Math.random() * 100 + 'vw';
+            star.style.top = Math.random() * 100 + 'vh';
+            
+            // Tốc độ nhấp nháy ngẫu nhiên
+            star.style.animationDuration = Math.random() * 2 + 1 + 's';
+            
+            starsContainer.appendChild(star);
         }
 
-        let currentDate = new Date();
-        let selectedDayInfo = null;
+        // 2. KỊCH BẢN CHỮ
+        const messages = [
+            "Trăng rằm Trung Thu hôm nay sáng thật đấy 🌕",
+            "Nhưng tớ đoán là...",
+            "Vẫn có người đang thức giờ này đúng không? 🤨",
+            "Cả ngày hôm nay cậu đã vất vả rồi...",
+            "Bây giờ, hãy thả lỏng người ra nào ☁️",
+            "Bật một chút nhạc chill...",
+            "Nhắm mắt lại và để những muộn phiền bay đi hết ✨",
+            "Chúc Phương ngủ thật ngon nhé! 🌙💖🐱"
+        ];
 
-        function renderCalendar() {
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth();
-            document.getElementById('monthYearText').innerText = `Tháng ${month + 1} ${year}`;
-            const firstDay = new Date(year, month, 1).getDay();
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
-            const calDays = document.getElementById('calDays');
-            calDays.innerHTML = '';
-            let startDay = firstDay === 0 ? 6 : firstDay - 1; 
+        let currentIndex = 0;
+        const textContainer = document.getElementById('text-container');
+        const startScreen = document.getElementById('start-screen');
+        const bgMusic = document.getElementById('bg-music');
+        const magicSky = document.getElementById('magic-sky');
+        const emojis = ['⭐', '✨', '🌕', '💖', '🐰', '🏮']; // Thêm icon Thỏ ngọc và Lồng đèn cho hợp Trung Thu
 
-            for(let i = 0; i < startDay; i++) {
-                const emptyDiv = document.createElement('div');
-                emptyDiv.classList.add('cal-day', 'empty');
-                calDays.appendChild(emptyDiv);
-            }
+        // XỬ LÝ KHI NGƯỜI DÙNG BẤM NÚT START
+        startScreen.addEventListener('click', function() {
+            // Mờ dần và ẩn màn hình chờ
+            startScreen.style.opacity = '0';
+            setTimeout(() => {
+                startScreen.style.display = 'none';
+            }, 1000);
 
-            for(let i = 1; i <= daysInMonth; i++) {
-                const dayDiv = document.createElement('div');
-                dayDiv.classList.add('cal-day');
-                dayDiv.innerText = i;
-                
-                if (selectedDayInfo && selectedDayInfo.day === i && selectedDayInfo.month === month && selectedDayInfo.year === year) {
-                    dayDiv.classList.add('selected');
+            // Bật nhạc nền
+            bgMusic.volume = 0.5; // Âm lượng 50%
+            bgMusic.play();
+
+            // Đợi 1 giây rồi bắt đầu chạy chữ
+            setTimeout(showNextMessage, 1000);
+        });
+
+        function showNextMessage() {
+            if (currentIndex < messages.length) {
+                textContainer.innerHTML = messages[currentIndex];
+                textContainer.classList.add('show-text');
+
+                const isFinalMessage = currentIndex === messages.length - 1;
+
+                if (isFinalMessage) {
+                    textContainer.classList.add('final-text');
+                    startMagicRain(); 
                 }
 
-                dayDiv.onclick = function() {
-                    if(selectedDayInfo && selectedDayInfo.element) selectedDayInfo.element.classList.remove('selected');
-                    dayDiv.classList.add('selected');
-                    selectedDayInfo = { day: i, month: month, year: year, element: dayDiv };
-                };
-                calDays.appendChild(dayDiv);
+                const displayTime = isFinalMessage ? 9999999 : 3000; // Mỗi câu dừng lại 3 giây
+
+                setTimeout(() => {
+                    if (!isFinalMessage) {
+                        textContainer.classList.remove('show-text');
+                        setTimeout(() => {
+                            currentIndex++;
+                            showNextMessage();
+                        }, 800); 
+                    }
+                }, displayTime);
             }
         }
 
-        function changeMonth(dir) {
-            currentDate.setMonth(currentDate.getMonth() + dir);
-            renderCalendar();
+        // HIỆU ỨNG RƠI LÚC KẾT THÚC
+        function startMagicRain() {
+            setInterval(() => {
+                const element = document.createElement('div');
+                element.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+                element.style.position = 'absolute';
+                element.style.left = Math.random() * 100 + 'vw';
+                element.style.fontSize = Math.random() * 20 + 20 + 'px'; // Icon to hơn chút
+                element.style.opacity = Math.random() * 0.8 + 0.2;
+                
+                const duration = Math.random() * 4 + 4;
+                element.style.animation = `fall ${duration}s linear forwards`;
+                
+                magicSky.appendChild(element);
+
+                setTimeout(() => {
+                    element.remove();
+                }, duration * 1000);
+            }, 400); // Tần suất rơi
         }
-
-        document.getElementById('hourInput').addEventListener('blur', function() { if(this.value.length === 1) this.value = '0' + this.value; });
-        document.getElementById('minuteInput').addEventListener('blur', function() { if(this.value.length === 1) this.value = '0' + this.value; });
-
-        /* HOÀN THÀNH FORM VÀ GỬI EMAIL */
-        function finishForm() {
-            const h = document.getElementById('hourInput').value;
-            const m = document.getElementById('minuteInput').value;
-            const time = `${h.padStart(2, '0')}:${m.padStart(2, '0')}`;
-            const food = document.querySelector('input[name="food"]:checked').value;
-
-            if(!selectedDayInfo) {
-                alert("Em bé Nhím chưa chọn ngày kìa!");
-                return;
-            }
-
-            const formattedDate = `${selectedDayInfo.day}/${selectedDayInfo.month + 1}/${selectedDayInfo.year}`;
-
-            // Hiển thị loading
-            document.getElementById('submitBtn').disabled = true;
-            document.getElementById('loadingMsg').style.display = 'block';
-
-            // Dữ liệu gửi qua mail
-            const data = {
-                Ngày_Hẹn: formattedDate,
-                Giờ_Hẹn: time,
-                Món_Ăn: food,
-                _subject: "💕 Em bé Nhím đã chốt lịch hẹn đi ăn với Wân!"
-            };
-
-            // Gửi dữ liệu về email thông qua FormSubmit
-            fetch(`https://formsubmit.co/ajax/${YOUR_EMAIL}`, {
-                method: "POST",
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Thành công thì chuyển sang bước 3
-                document.getElementById('resDate').innerText = formattedDate;
-                document.getElementById('resTime').innerText = time;
-                document.getElementById('resFood').innerText = food;
-                document.getElementById('summaryText').innerHTML = 
-                    `Vậy là chốt mình đi ăn <b>${food}</b> vào lúc <b>${time}</b> ngày <b>${formattedDate}</b> nha! Wân chuẩn bị xe rồi đón em nhoa ✨`;
-                nextStep(3);
-            })
-            .catch(error => {
-                // Nếu lỗi mạng vẫn cho qua bước 3 để không làm gián đoạn trải nghiệm của bạn nữ
-                document.getElementById('resDate').innerText = formattedDate;
-                document.getElementById('resTime').innerText = time;
-                document.getElementById('resFood').innerText = food;
-                nextStep(3);
-            });
-        }
-
-        function createPetal() {
-            const petal = document.createElement('div');
-            petal.classList.add('petal');
-            const size = Math.random() * 10 + 10;
-            petal.style.width = size + 'px'; petal.style.height = size + 'px';
-            petal.style.left = Math.random() * 100 + 'vw';
-            petal.style.animationDuration = Math.random() * 5 + 5 + 's';
-            document.body.appendChild(petal);
-            setTimeout(() => { petal.remove(); }, 10000);
-        }
-        setInterval(createPetal, 400);
-
-        renderCalendar();
     </script>
 </body>
 </html>
