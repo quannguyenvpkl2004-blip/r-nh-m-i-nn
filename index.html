@@ -1,269 +1,635 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gửi Phương... 🌕✨</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nhím Scanner™</title>
 
-        body {
-            /* Nền trời đêm gradient */
-            background: linear-gradient(to bottom, #020111 0%, #20124d 60%, #000022 100%);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Baloo 2', 'Comic Sans MS', sans-serif;
-            overflow: hidden;
-            color: white;
-            position: relative;
-        }
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-        /* ----- MÀN HÌNH CHỜ (Bấm vào để phát nhạc) ----- */
-        #start-screen {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            cursor: pointer;
-            transition: opacity 1s ease;
-        }
+body {
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background:
+        radial-gradient(circle at top, #34104f, #100518 55%, #050208);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+}
 
-        .btn-start {
-            font-size: 1.5rem;
-            padding: 15px 30px;
-            border-radius: 50px;
-            background: linear-gradient(45deg, #ff99cc, #ff66b2);
-            color: white;
-            border: none;
-            box-shadow: 0 0 20px #ff66b2;
-            animation: pulseBtn 1.5s infinite alternate;
-            pointer-events: none; /* Để click dính vào start-screen */
-        }
+.container {
+    width: min(92%, 430px);
+    padding: 28px 22px;
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 25px;
+    background: rgba(255,255,255,.07);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 20px 70px rgba(0,0,0,.5);
+    text-align: center;
+}
 
-        @keyframes pulseBtn {
-            0% { transform: scale(1); box-shadow: 0 0 10px #ff66b2; }
-            100% { transform: scale(1.1); box-shadow: 0 0 30px #ff3399; }
-        }
+.logo {
+    font-size: 48px;
+    margin-bottom: 8px;
+}
 
-        /* ----- BẦU TRỜI SAO VÀ TRĂNG RẰM ----- */
-        #stars-container {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0;
-        }
+h1 {
+    font-size: 25px;
+    margin-bottom: 7px;
+}
 
-        .star {
-            position: absolute;
-            background-color: white;
-            border-radius: 50%;
-            animation: twinkle infinite alternate;
-        }
+.subtitle {
+    color: #bbb;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
 
-        @keyframes twinkle {
-            0% { opacity: 0.2; box-shadow: none; }
-            100% { opacity: 1; box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8); }
-        }
+input {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    outline: none;
+    border-radius: 14px;
+    background: rgba(255,255,255,.1);
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 12px;
+}
 
-        .moon {
-            position: absolute;
-            top: 10%;
-            right: 15%;
-            width: 150px;
-            height: 150px;
-            background: radial-gradient(circle at 30% 30%, #fff9e6, #fde482, #d4af37);
-            border-radius: 50%;
-            box-shadow: 0 0 50px 10px rgba(253, 228, 130, 0.6), 
-                        0 0 100px 30px rgba(253, 228, 130, 0.3);
-            z-index: 1;
-            animation: moonFloat 6s ease-in-out infinite alternate;
-        }
+input::placeholder {
+    color: #999;
+}
 
-        @keyframes moonFloat {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-15px); }
-        }
+button {
+    width: 100%;
+    border: none;
+    padding: 15px;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    background: linear-gradient(135deg, #ff4f9a, #9d4edd);
+    color: white;
+    transition: .2s;
+}
 
-        /* ----- HIỆU ỨNG CHỮ ----- */
-        #text-container {
-            font-size: 2.5rem;
-            font-weight: bold;
-            text-align: center;
-            padding: 0 20px;
-            z-index: 10;
-            opacity: 0;
-            transform: scale(0.8) translateY(20px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.5);
-            max-width: 80%;
-        }
+button:active {
+    transform: scale(.96);
+}
 
-        .show-text {
-            opacity: 1 !important;
-            transform: scale(1) translateY(0) !important;
-        }
+.hidden {
+    display: none;
+}
 
-        .final-text {
-            font-size: 3.5rem !important;
-            color: #ffccff;
-            text-shadow: 0 0 15px #ff66b2, 0 0 30px #ff1a8c, 0 0 50px #ff0080;
-            animation: floatText 3s ease-in-out infinite alternate;
-        }
+/* SCANNING */
 
-        @keyframes floatText {
-            0% { transform: translateY(0) scale(1); }
-            100% { transform: translateY(-10px) scale(1.05); }
-        }
+.scanner {
+    margin-top: 20px;
+}
 
-        /* Vùng chứa sao rơi lúc cuối */
-        #magic-sky {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 20; pointer-events: none;
-        }
+.radar {
+    width: 150px;
+    height: 150px;
+    margin: 10px auto 25px;
+    border-radius: 50%;
+    border: 2px solid #ff4f9a;
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(circle, transparent 20%, rgba(255,79,154,.08) 21%, transparent 22%),
+        radial-gradient(circle, transparent 45%, rgba(255,79,154,.08) 46%, transparent 47%);
+}
 
-        @keyframes fall {
-            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
-        }
-    </style>
+.radar::before {
+    content: "";
+    position: absolute;
+    width: 50%;
+    height: 2px;
+    background: #ff4f9a;
+    top: 50%;
+    left: 50%;
+    transform-origin: left center;
+    animation: scan 1.5s linear infinite;
+    box-shadow: 0 0 15px #ff4f9a;
+}
+
+@keyframes scan {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.progress-box {
+    width: 100%;
+    height: 12px;
+    background: rgba(255,255,255,.1);
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 15px 0;
+}
+
+.progress {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg,#ff4f9a,#c77dff);
+    transition: width .15s linear;
+}
+
+.status {
+    font-size: 14px;
+    color: #ddd;
+    min-height: 20px;
+}
+
+/* TERMINAL */
+
+.terminal {
+    margin-top: 20px;
+    text-align: left;
+    background: #050505;
+    border-radius: 12px;
+    padding: 15px;
+    font-family: monospace;
+    font-size: 12px;
+    color: #61ff8b;
+    height: 130px;
+    overflow: hidden;
+}
+
+.line {
+    margin-bottom: 6px;
+}
+
+/* RESULT */
+
+.result {
+    animation: appear .7s ease;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.result-title {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.name {
+    color: #ff79b0;
+}
+
+.score {
+    font-size: 65px;
+    font-weight: 900;
+    margin: 15px 0;
+    background: linear-gradient(135deg,#ff70a6,#c77dff);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.stat {
+    text-align: left;
+    margin: 13px 0;
+}
+
+.stat-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.bar {
+    height: 9px;
+    background: rgba(255,255,255,.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.fill {
+    height: 100%;
+    border-radius: 10px;
+    background: linear-gradient(90deg,#ff4f9a,#c77dff);
+}
+
+.message {
+    margin: 22px 0;
+    padding: 18px;
+    border-radius: 16px;
+    background: rgba(255,79,154,.1);
+    border: 1px solid rgba(255,79,154,.2);
+    line-height: 1.6;
+}
+
+.footer {
+    margin-top: 18px;
+    color: #777;
+    font-size: 11px;
+}
+
+/* HEARTS */
+
+.heart {
+    position: fixed;
+    pointer-events: none;
+    animation: floatUp 4s linear forwards;
+    font-size: 20px;
+}
+
+@keyframes floatUp {
+    from {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-100vh) scale(1.7);
+        opacity: 0;
+    }
+}
+</style>
 </head>
+
 <body>
 
-    <!-- BỘ PHÁT NHẠC (Mình dùng 1 bản nhạc Lofi Chill mặc định) -->
-    <!-- Nếu muốn đổi nhạc, bạn chỉ cần thay link trong thẻ src="..." bên dưới -->
-    <audio id="bg-music" loop>
-        <source <source src="nhacnen.mp3" type="audio/mpeg">>
-    </audio>
+<div class="container">
 
-    <!-- MÀN HÌNH CHỜ CLICK -->
-    <div id="start-screen">
-        <h2 style="margin-bottom: 20px; color: #fff;">Có một điều bí mật dành cho cậu...</h2>
-        <div class="btn-start">Chạm vào đây để mở 🎁</div>
+    <!-- START -->
+    <div id="start">
+
+        <div class="logo">💗</div>
+
+        <h1>NHÍM SCANNER™</h1>
+
+        <div class="subtitle">
+            Hệ thống phân tích người yêu thế hệ mới
+        </div>
+
+        <input
+            id="nameInput"
+            type="text"
+            placeholder="Nhập tên người cần quét..."
+        >
+
+        <button onclick="startScan()">
+            🔍 BẮT ĐẦU QUÉT
+        </button>
+
+        <div class="footer">
+            ⚠️ Kết quả chỉ mang tính chất giải trí
+        </div>
+
     </div>
 
-    <!-- BỐI CẢNH NỀN -->
-    <div id="stars-container"></div>
-    <div class="moon"></div>
 
-    <!-- CHỮ HIỂN THỊ -->
-    <div id="text-container"></div>
+    <!-- SCANNING -->
+    <div id="scanning" class="hidden">
 
-    <!-- KHU VỰC HIỆU ỨNG RƠI KHI KẾT THÚC -->
-    <div id="magic-sky"></div>
+        <div class="logo">🛰️</div>
 
-    <script>
-        // 1. TẠO BẦU TRỜI ĐẦY SAO LẤP LÁNH
-        const starsContainer = document.getElementById('stars-container');
-        const numberOfStars = 150; // Số lượng sao
-        
-        for (let i = 0; i < numberOfStars; i++) {
-            let star = document.createElement('div');
-            star.className = 'star';
-            
-            // Kích thước ngẫu nhiên (từ 1px đến 3px)
-            let size = Math.random() * 2 + 1;
-            star.style.width = size + 'px';
-            star.style.height = size + 'px';
-            
-            // Vị trí ngẫu nhiên trên màn hình
-            star.style.left = Math.random() * 100 + 'vw';
-            star.style.top = Math.random() * 100 + 'vh';
-            
-            // Tốc độ nhấp nháy ngẫu nhiên
-            star.style.animationDuration = Math.random() * 2 + 1 + 's';
-            
-            starsContainer.appendChild(star);
-        }
+        <h1>ĐANG QUÉT...</h1>
 
-        // 2. KỊCH BẢN CHỮ
-        const messages = [
-            "Trăng rằm Trung Thu hôm nay sáng thật đấy 🌕",
-            "Nhưng tớ đoán là...",
-            "Vẫn có người đang thức giờ này đúng không? 🤨",
-            "Cả ngày hôm nay cậu đã vất vả rồi...",
-            "Bây giờ, hãy thả lỏng người ra nào ☁️",
-            "Bật một chút nhạc chill...",
-            "Nhắm mắt lại và để những muộn phiền bay đi hết ✨",
-            "Chúc Phương ngủ thật ngon nhé! 🌙💖🐱"
-        ];
+        <div class="scanner">
 
-        let currentIndex = 0;
-        const textContainer = document.getElementById('text-container');
-        const startScreen = document.getElementById('start-screen');
-        const bgMusic = document.getElementById('bg-music');
-        const magicSky = document.getElementById('magic-sky');
-        const emojis = ['⭐', '✨', '🌕', '💖', '🐰', '🏮']; // Thêm icon Thỏ ngọc và Lồng đèn cho hợp Trung Thu
+            <div class="radar"></div>
 
-        // XỬ LÝ KHI NGƯỜI DÙNG BẤM NÚT START
-        startScreen.addEventListener('click', function() {
-            // Mờ dần và ẩn màn hình chờ
-            startScreen.style.opacity = '0';
-            setTimeout(() => {
-                startScreen.style.display = 'none';
-            }, 1000);
+            <div id="status" class="status">
+                Đang khởi động hệ thống...
+            </div>
 
-            // Bật nhạc nền
-            bgMusic.volume = 0.5; // Âm lượng 50%
-            bgMusic.play();
+            <div class="progress-box">
+                <div id="progress" class="progress"></div>
+            </div>
 
-            // Đợi 1 giây rồi bắt đầu chạy chữ
-            setTimeout(showNextMessage, 1000);
-        });
+            <div class="terminal" id="terminal"></div>
 
-        function showNextMessage() {
-            if (currentIndex < messages.length) {
-                textContainer.innerHTML = messages[currentIndex];
-                textContainer.classList.add('show-text');
+        </div>
 
-                const isFinalMessage = currentIndex === messages.length - 1;
+    </div>
 
-                if (isFinalMessage) {
-                    textContainer.classList.add('final-text');
-                    startMagicRain(); 
-                }
 
-                const displayTime = isFinalMessage ? 9999999 : 3000; // Mỗi câu dừng lại 3 giây
+    <!-- RESULT -->
+    <div id="result" class="hidden">
 
-                setTimeout(() => {
-                    if (!isFinalMessage) {
-                        textContainer.classList.remove('show-text');
-                        setTimeout(() => {
-                            currentIndex++;
-                            showNextMessage();
-                        }, 800); 
-                    }
-                }, displayTime);
+        <div class="result">
+
+            <div class="logo">💕</div>
+
+            <div class="result-title">
+                ĐÃ QUÉT XONG
+            </div>
+
+            <div>
+                Đối tượng:
+                <span id="resultName" class="name"></span>
+            </div>
+
+            <div class="score">
+                99.9%
+            </div>
+
+            <div class="subtitle">
+                MỨC ĐỘ ĐÁNG YÊU
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-top">
+                    <span>🥺 Cần được dỗ</span>
+                    <span>100%</span>
+                </div>
+
+                <div class="bar">
+                    <div class="fill" style="width:100%"></div>
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-top">
+                    <span>😤 Hay dỗi</span>
+                    <span>87%</span>
+                </div>
+
+                <div class="bar">
+                    <div class="fill" style="width:87%"></div>
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-top">
+                    <span>😂 Độ nhây</span>
+                    <span>94%</span>
+                </div>
+
+                <div class="bar">
+                    <div class="fill" style="width:94%"></div>
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-top">
+                    <span>❤️ Yêu Wân</span>
+                    <span>100%</span>
+                </div>
+
+                <div class="bar">
+                    <div class="fill" style="width:100%"></div>
+                </div>
+
+            </div>
+
+
+            <div class="message">
+
+                🔬 <b>KẾT LUẬN CỦA HỆ THỐNG</b>
+
+                <br><br>
+
+                Đối tượng có dấu hiệu:
+
+                <br>
+
+                ❤️ Rất đáng yêu<br>
+                😤 Hơi hay dỗi<br>
+                🥺 Cần được dỗ thường xuyên<br>
+                🍜 Có khả năng rủ người yêu đi ăn<br>
+                💕 Và đặc biệt...
+
+                <br><br>
+
+                <b>
+                    KHÔNG ĐƯỢC PHÉP ĐỂ WÂN MỘT MÌNH QUÁ LÂU.
+                </b>
+
+            </div>
+
+
+            <button onclick="restart()">
+                🔄 QUÉT LẠI
+            </button>
+
+            <div class="footer">
+                NHÍM SCANNER™ — Powered by Wân Corporation
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function startScan() {
+
+    let name =
+        document.getElementById("nameInput").value.trim();
+
+    if (!name) {
+        name = "Nhím";
+    }
+
+    document.getElementById("start")
+        .classList.add("hidden");
+
+    document.getElementById("scanning")
+        .classList.remove("hidden");
+
+    document.getElementById("resultName")
+        .innerText = name;
+
+    scan();
+
+}
+
+
+function scan() {
+
+    let progress = 0;
+
+    const progressBar =
+        document.getElementById("progress");
+
+    const status =
+        document.getElementById("status");
+
+    const terminal =
+        document.getElementById("terminal");
+
+    const messages = [
+
+        "Đang kết nối với đối tượng...",
+
+        "Đang phân tích tính cách...",
+
+        "Đang kiểm tra mức độ đáng yêu...",
+
+        "Đang quét mức độ dỗi...",
+
+        "Đang kiểm tra khả năng nhớ người yêu...",
+
+        "Đang phân tích dữ liệu tình cảm...",
+
+        "⚠️ Phát hiện lượng đáng yêu bất thường...",
+
+        "Đang kiểm tra mức độ yêu Wân...",
+
+        "99%...",
+
+        "Hoàn tất."
+    ];
+
+    const interval =
+        setInterval(() => {
+
+            progress += Math.random() * 4;
+
+            if (progress >= 100) {
+
+                progress = 100;
+
+                clearInterval(interval);
+
+                progressBar.style.width = "100%";
+
+                status.innerText =
+                    "✅ Phân tích hoàn tất!";
+
+                setTimeout(showResult, 1000);
+
+                return;
             }
-        }
 
-        // HIỆU ỨNG RƠI LÚC KẾT THÚC
-        function startMagicRain() {
-            setInterval(() => {
-                const element = document.createElement('div');
-                element.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
-                element.style.position = 'absolute';
-                element.style.left = Math.random() * 100 + 'vw';
-                element.style.fontSize = Math.random() * 20 + 20 + 'px'; // Icon to hơn chút
-                element.style.opacity = Math.random() * 0.8 + 0.2;
-                
-                const duration = Math.random() * 4 + 4;
-                element.style.animation = `fall ${duration}s linear forwards`;
-                
-                magicSky.appendChild(element);
+            progressBar.style.width =
+                progress + "%";
 
-                setTimeout(() => {
-                    element.remove();
-                }, duration * 1000);
-            }, 400); // Tần suất rơi
-        }
-    </script>
+            let index =
+                Math.floor(
+                    progress / 10
+                );
+
+            status.innerText =
+                messages[Math.min(index, messages.length - 1)];
+
+            if (Math.random() > .55) {
+
+                let line =
+                    document.createElement("div");
+
+                line.className = "line";
+
+                line.innerText =
+                    "> " +
+                    messages[
+                        Math.floor(
+                            Math.random() *
+                            messages.length
+                        )
+                    ];
+
+                terminal.appendChild(line);
+
+                terminal.scrollTop =
+                    terminal.scrollHeight;
+            }
+
+        }, 180);
+
+}
+
+
+function showResult() {
+
+    document.getElementById("scanning")
+        .classList.add("hidden");
+
+    document.getElementById("result")
+        .classList.remove("hidden");
+
+    createHearts();
+
+}
+
+
+function createHearts() {
+
+    for (let i = 0; i < 25; i++) {
+
+        setTimeout(() => {
+
+            const heart =
+                document.createElement("div");
+
+            heart.className = "heart";
+
+            heart.innerText =
+                ["❤️","💕","💗","💖","💘"]
+                [Math.floor(Math.random() * 5)];
+
+            heart.style.left =
+                Math.random() * 100 + "vw";
+
+            heart.style.bottom = "-30px";
+
+            heart.style.animationDuration =
+                (3 + Math.random() * 3) + "s";
+
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+
+        }, i * 100);
+
+    }
+
+}
+
+
+function restart() {
+
+    document.getElementById("result")
+        .classList.add("hidden");
+
+    document.getElementById("start")
+        .classList.remove("hidden");
+
+    document.getElementById("nameInput")
+        .value = "";
+
+}
+
+</script>
+
 </body>
 </html>
