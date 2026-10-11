@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,600;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script>
@@ -30,14 +30,23 @@
     </script>
 
     <style>
-        /* Custom Styles for Luxury Feel */
         body {
             background-color: #FAF9F6;
             color: #2C2519;
             overflow-x: hidden;
-            font-family: 'Lora', serif;
         }
 
+        /* Hero Text Styling */
+        .text-gold-pop {
+            color: #D4AF37;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9), 0 4px 15px rgba(0, 0, 0, 0.7);
+        }
+        
+        .text-shadow-light {
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.8);
+        }
+
+        /* Gradients */
         .text-gradient-gold {
             background: linear-gradient(to right, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
             -webkit-background-clip: text;
@@ -46,27 +55,28 @@
             display: inline-block;
         }
 
-        .border-gold-gradient {
-            border-image: linear-gradient(to right, #BF953F, #FCF6BA, #B38728) 1;
-        }
-
         .bg-gold-gradient {
             background: linear-gradient(135deg, #E5D3B3 0%, #D4AF37 50%, #B38728 100%);
         }
 
-        /* Highlight Text */
-        .text-gold-pop {
-            color: #D4AF37;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.5);
+        /* Masonry Gallery Setup */
+        .masonry-grid {
+            column-count: 1;
+            column-gap: 1.5rem;
+        }
+        @media (min-width: 640px) {
+            .masonry-grid { column-count: 2; }
+        }
+        @media (min-width: 1024px) {
+            .masonry-grid { column-count: 3; }
         }
         
-        .text-shadow-light {
-            text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+            display: block;
+            width: 100%;
         }
-
-        /* Hero Image Parallax */
-        .hero-section {
-            background-image: linear-gradient(rgba(44, 37, 25, 0.5), rgba(44, 37, 25, 0.5)), url('IMG_9796.jpg');
 
         /* Fade In Animation */
         .fade-in {
@@ -79,47 +89,7 @@
             transform: translateY(0);
         }
 
-        /* Gallery Grid using CSS Columns (Masonry effect) */
-        .gallery-grid {
-            column-count: 1;
-            column-gap: 1.5rem;
-        }
-        @media (min-width: 640px) {
-            .gallery-grid { column-count: 2; }
-        }
-        @media (min-width: 1024px) {
-            .gallery-grid { column-count: 3; }
-        }
-        
-        .gallery-item {
-            break-inside: avoid;
-            margin-bottom: 1.5rem;
-            display: block;
-            width: 100%;
-            overflow: hidden;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-            position: relative;
-        }
-        
-        .gallery-item img {
-            width: 100%;
-            height: auto; /* Giữ đúng tỷ lệ ảnh, không bị méo/đè */
-            display: block;
-            object-fit: cover;
-            transition: transform 0.6s ease;
-        }
-        
-        .gallery-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
-        }
-        .gallery-item:hover img {
-            transform: scale(1.03);
-        }
-
-        /* Elegant Divider */
+        /* Divider */
         .divider {
             display: flex;
             align-items: center;
@@ -131,136 +101,157 @@
             flex: 1;
             border-bottom: 1px solid #D4AF37;
         }
-        .divider:not(:empty)::before {
-            margin-right: .5em;
-        }
-        .divider:not(:empty)::after {
-            margin-left: .5em;
-        }
+        .divider:not(:empty)::before { margin-right: 1em; }
+        .divider:not(:empty)::after { margin-left: 1em; }
     </style>
 </head>
-<body class="font-sans antialiased selection:bg-gold selection:text-white">
+<body class="font-body antialiased selection:bg-gold selection:text-white">
 
     <nav class="fixed w-full z-50 transition-all duration-300 py-4 px-6 md:px-12" id="navbar">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <a href="#" class="font-serif text-2xl md:text-3xl text-white tracking-widest drop-shadow-md" id="nav-brand">T & H</a>
-            <div class="hidden md:flex space-x-8 text-sm uppercase tracking-widest text-white drop-shadow-md" id="nav-links">
+            <a href="#" class="font-serif text-2xl md:text-3xl text-white font-bold tracking-widest drop-shadow-md transition-colors" id="nav-brand">T <span class="text-champagne">&</span> H</a>
+            <div class="hidden md:flex space-x-8 text-sm uppercase tracking-widest text-white drop-shadow-md font-medium" id="nav-links">
                 <a href="#home" class="hover:text-gold transition duration-300">Trang chủ</a>
                 <a href="#story" class="hover:text-gold transition duration-300">Chuyện tình</a>
-                <a href="#gallery" class="hover:text-gold transition duration-300">Thư viện ảnh</a>
+                <a href="#gallery" class="hover:text-gold transition duration-300">Khoảnh khắc</a>
             </div>
-            <!-- Mobile Menu Button -->
-            <button class="md:hidden text-white focus:outline-none" id="mobile-menu-btn">
+            <!-- Mobile Menu -->
+            <button class="md:hidden text-white focus:outline-none drop-shadow-md" id="mobile-menu-btn">
                 <i class="fas fa-bars text-2xl"></i>
             </button>
         </div>
     </nav>
 
-    <header id="home" class="hero-section h-screen w-full flex flex-col items-center justify-center relative">
-        <div class="text-center px-4 z-10 fade-in">
-            <h3 class="font-body text-champagne tracking-[0.3em] uppercase text-sm md:text-lg mb-4 text-shadow-light font-bold">Kỷ niệm ngày cưới</h3>
+    <header id="home" class="relative h-screen w-full flex flex-col items-center justify-center bg-dark overflow-hidden">
+        <!-- Hero Background with Dark Overlay for strong contrast -->
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-black/60 z-10"></div>
+            <img src="IMG_9796.jpg" alt="Thắng & Hà" class="w-full h-full object-cover object-center animate-[pulse_10s_ease-in-out_infinite_alternate]" />
+        </div>
+
+        <div class="text-center px-4 z-20 fade-in">
+            <h3 class="font-body text-champagne tracking-[0.4em] uppercase text-sm md:text-lg mb-6 text-shadow-light font-semibold">
+                Kỷ niệm ngày cưới
+            </h3>
             <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl font-bold text-gold-pop mb-6 leading-tight">
                 Nguyễn Văn Thắng <br> 
-                <span class="text-4xl md:text-5xl italic text-champagne">&</span> <br> 
+                <span class="text-4xl md:text-6xl italic text-champagne drop-shadow-lg">&</span> <br> 
                 Phan Ngọc Hà
             </h1>
-            <p class="font-body text-xl md:text-2xl text-white italic mt-6 max-w-2xl mx-auto text-shadow-light">
+            <p class="font-body text-lg md:text-2xl text-white italic mt-8 max-w-2xl mx-auto text-shadow-light font-medium">
                 "Hành trình của tình yêu và sự gắn kết trường tồn"
             </p>
         </div>
         
-        <!-- Scroll indicator -->
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-white">
-            <a href="#quote"><i class="fas fa-chevron-down text-2xl opacity-70 hover:opacity-100 hover:text-gold transition duration-300"></i></a>
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce z-20">
+            <a href="#quote" aria-label="Cuộn xuống"><i class="fas fa-chevron-down text-3xl text-white opacity-80 hover:opacity-100 hover:text-gold transition duration-300 drop-shadow-lg"></i></a>
         </div>
     </header>
 
     <section id="quote" class="py-24 bg-cream text-center px-6">
         <div class="max-w-4xl mx-auto fade-in">
-            <i class="fas fa-quote-left text-4xl text-gold mb-6 opacity-50"></i>
-            <h2 class="font-serif text-3xl md:text-4xl leading-relaxed italic text-dark font-semibold">
+            <i class="fas fa-quote-left text-4xl md:text-5xl text-gold mb-8 opacity-40"></i>
+            <h2 class="font-serif text-3xl md:text-4xl leading-relaxed italic text-dark font-medium">
                 "Tình yêu không phải là nhìn chằm chằm vào nhau, mà là cùng nhau nhìn về một hướng."
             </h2>
-            <p class="mt-6 font-body text-sm uppercase tracking-widest text-gray-500 font-bold">— Antoine de Saint-Exupéry —</p>
-            <div class="divider text-gold text-2xl mt-12 w-64 mx-auto">&#10084;</div>
+            <p class="mt-8 font-body text-sm md:text-base uppercase tracking-[0.2em] text-gray-500 font-semibold">— Antoine de Saint-Exupéry —</p>
+            <div class="divider text-gold text-2xl mt-12 w-48 mx-auto opacity-70">&#10084;</div>
         </div>
     </section>
 
-    <section id="story" class="py-20 bg-white">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center mb-16 fade-in">
+    <section id="story" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-6 md:px-12">
+            <div class="text-center mb-20 fade-in">
                 <h2 class="font-serif text-4xl md:text-5xl text-dark mb-4 font-bold">Câu Chuyện Tình Yêu</h2>
-                <p class="font-body text-gray-500 tracking-wider text-lg">Hành trình chúng mình đi cùng nhau</p>
+                <p class="font-body text-gray-500 tracking-[0.1em] text-lg">Hành trình chúng mình đi cùng nhau</p>
             </div>
 
-            <div class="flex flex-col md:flex-row items-center gap-12 fade-in">
-                <div class="w-full md:w-1/2">
-                    <div class="relative rounded-t-full overflow-hidden border-4 border-champagne p-2">
-                        <img src="Chân dung áo dài bên bó hoa.png" alt="Our Story" class="w-full h-[500px] object-cover rounded-t-full">
-                    </div>
+            <div class="flex flex-col lg:flex-row items-center gap-16 fade-in">
+                <div class="w-full lg:w-1/2 relative">
+                    <!-- Decorative background element -->
+                    <div class="absolute inset-0 bg-champagne rounded-[2rem] transform translate-x-4 translate-y-4 opacity-50 z-0"></div>
+                    <img src="Chân dung áo dài bên bó hoa.png" alt="Chân dung cô dâu" class="relative z-10 w-full h-auto rounded-[2rem] shadow-2xl border-4 border-white object-cover">
                 </div>
-                <div class="w-full md:w-1/2 space-y-6 text-center md:text-left">
-                    <h3 class="font-serif text-3xl font-bold text-gradient-gold">Ngày Ấy & Bây Giờ</h3>
-                    <p class="font-body text-gray-700 leading-relaxed text-justify text-lg">
-                        Từ những ngày đầu tiên gặp gỡ, ánh mắt chạm nhau đã thắp lên một ngọn lửa ấm áp trong tim. Trải qua bao nhiêu thăng trầm, vui buồn của cuộc sống, cái nắm tay ngày ấy chỉ càng thêm chặt. 
-                    </p>
-                    <p class="font-body text-gray-700 leading-relaxed text-justify text-lg">
-                        Hôm nay, nhìn lại chặng đường đã qua, chúng ta tự hào vì đã luôn là điểm tựa vững chắc cho đối phương. Lễ kỷ niệm này không chỉ là cột mốc thời gian, mà còn là lời khẳng định tình yêu bất diệt mà Thắng và Hà dành cho nhau.
-                    </p>
-                    <button class="mt-8 px-8 py-3 border-2 border-gold text-gold hover:bg-gold hover:text-white transition duration-300 font-body tracking-widest text-sm font-bold">
-                        ĐỌC THÊM
-                    </button>
+                
+                <div class="w-full lg:w-1/2 space-y-8 text-center lg:text-left">
+                    <h3 class="font-serif text-3xl md:text-4xl font-bold text-gradient-gold">Ngày Ấy & Bây Giờ</h3>
+                    <div class="space-y-6 text-gray-700 font-body text-lg leading-relaxed text-justify">
+                        <p>
+                            Từ những ngày đầu tiên gặp gỡ, ánh mắt chạm nhau đã thắp lên một ngọn lửa ấm áp trong tim. Trải qua bao nhiêu thăng trầm, vui buồn của cuộc sống, cái nắm tay ngày ấy chỉ càng thêm chặt. 
+                        </p>
+                        <p>
+                            Hôm nay, nhìn lại chặng đường đã qua, chúng ta tự hào vì đã luôn là điểm tựa vững chắc cho đối phương. Lễ kỷ niệm này không chỉ là cột mốc thời gian, mà còn là lời khẳng định tình yêu bất diệt mà Thắng và Hà dành cho nhau.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <section id="gallery" class="py-24 bg-cream">
-        <div class="max-w-7xl mx-auto px-6">
+        <div class="max-w-[1400px] mx-auto px-6">
             <div class="text-center mb-16 fade-in">
                 <h2 class="font-serif text-4xl md:text-5xl text-dark mb-4 font-bold">Khoảnh Khắc Đáng Nhớ</h2>
-                <div class="h-1 w-24 bg-gold-gradient mx-auto"></div>
+                <div class="h-1 w-24 bg-gold-gradient mx-auto rounded-full"></div>
+                <p class="font-body text-gray-500 tracking-[0.1em] text-lg mt-6">Lưu giữ từng nụ cười, ánh mắt và niềm hạnh phúc</p>
             </div>
 
-            <div class="gallery-grid fade-in">
-                <!-- Gallery Items -->
-                <div class="gallery-item">
-                    <img src="Vietnamese Engagement Portrait with Pink Roses (1).png" alt="Đôi uyên ương bên hoa">
-                </div>
-                <div class="gallery-item">
-                    <img src="Vietnamese Engagement Portrait in Green Drapery.png" alt="Cặp đôi rạng rỡ">
-                </div>
-                <div class="gallery-item">
-                    <img src="Chân dung đôi uyên ương bên rèm xanh (1).png" alt="Chân dung tình yêu">
-                </div>
-                <div class="gallery-item">
-                    <img src="Đại gia đình sum vầy bên lễ vật hoa quả.png" alt="Đại gia đình sum vầy">
-                </div>
-                <div class="gallery-item">
-                    <img src="Khoảnh khắc vui nhộn trước lễ cưới.png" alt="Khoảnh khắc vui nhộn">
-                </div>
-                <div class="gallery-item">
-                    <img src="Khoảnh Khắc Phát Biểu Lễ Đám Hỏi.png" alt="Phát biểu lễ đám hỏi">
-                </div>
-                <div class="gallery-item">
-                    <img src="Khoảnh khắc phát biểu trong lễ cưới.png" alt="Đại diện gia đình phát biểu">
-                </div>
-                <div class="gallery-item">
-                    <img src="Chân dung đôi uyên ương bên rèm xanh.png" alt="Hạnh phúc viên mãn">
-                </div>
+            <!-- Beautiful Masonry Layout -->
+            <div class="masonry-grid fade-in">
+                
+                <a href="#" class="masonry-item group relative block">
+                    <img src="Đại gia đình sum vầy bên lễ vật hoa quả.png" alt="Đại gia đình sum vầy" loading="lazy" class="w-full h-auto rounded-xl shadow-md border-2 border-white/80 transition-all duration-500 group-hover:scale-[1.03] group-hover:shadow-2xl object-cover">
+                    <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+                </a>
+
+                <a href="#" class="masonry-item group relative block">
+                    <img src="Vietnamese Engagement Portrait with Pink Roses (1).png" alt="Cặp đôi bên hoa hồng" loading="lazy" class="w-full h-auto rounded-xl shadow-md border-2 border-white/80 transition-all duration-500 group-hover:scale-[1.03] group-hover:shadow-2xl object-cover">
+                    <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+                </a>
+
+                <a href="#" class="masonry-item group relative block">
+                    <img src="Chân dung đôi uyên ương bên rèm xanh (1).png" alt="Uyên ương bên rèm xanh" loading="lazy" class="w-full h-auto rounded-xl shadow-md border-2 border-white/80 transition-all duration-500 group-hover:scale-[1.03] group-hover:shadow-2xl object-cover">
+                    <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+                </a>
+
+                <a href="#" class="masonry-item group relative block">
+                    <img src="Khoảnh khắc vui nhộn trước lễ cưới.png" alt="Khoảnh khắc vui nhộn" loading="lazy" class="w-full h-auto rounded-xl shadow-md border-2 border-white/80 transition-all duration-500 group-hover:scale-[1.03] group-hover:shadow-2xl object-cover">
+                    <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+                </a>
+
+                <a href="#" class="masonry-item group relative block">
+                    <img src="Khoảnh Khắc Phát Biểu Lễ Đám Hỏi.png" alt="Phát biểu đám hỏi" loading="lazy" class="w-full h-auto rounded-xl shadow-md border-2 border-white/80 transition-all duration-500 group-hover:scale-[1.03] group-hover:shadow-2xl object-cover">
+                    <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+                </a>
+
+                <a href="#" class="masonry-item group relative block">
+                    <img src="Vietnamese Engagement Portrait in Green Drapery.png" alt="Lễ dạm ngõ" loading="lazy" class="w-full h-auto rounded-xl shadow-md border-2 border-white/80 transition-all duration-500 group-hover:scale-[1.03] group-hover:shadow-2xl object-cover">
+                    <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+                </a>
+                
+                <a href="#" class="masonry-item group relative block">
+                    <img src="Chân dung đôi uyên ương bên rèm xanh.png" alt="Hạnh phúc viên mãn" loading="lazy" class="w-full h-auto rounded-xl shadow-md border-2 border-white/80 transition-all duration-500 group-hover:scale-[1.03] group-hover:shadow-2xl object-cover">
+                    <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+                </a>
+
+                <a href="#" class="masonry-item group relative block">
+                    <img src="Khoảnh khắc phát biểu trong lễ cưới.png" alt="Đại diện phát biểu" loading="lazy" class="w-full h-auto rounded-xl shadow-md border-2 border-white/80 transition-all duration-500 group-hover:scale-[1.03] group-hover:shadow-2xl object-cover">
+                    <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+                </a>
+
             </div>
         </div>
     </section>
 
-    <footer class="bg-dark text-champagne py-12 text-center">
-        <div class="max-w-4xl mx-auto px-6">
-            <h2 class="font-serif text-4xl mb-4 font-bold text-gold">Thắng & Hà</h2>
-            <p class="font-body text-sm tracking-widest opacity-80 mb-6 font-bold">MÃI MÃI MỘT TÌNH YÊU</p>
-            <div class="flex justify-center space-x-6 mb-8">
-                <a href="#" class="text-champagne hover:text-gold transition duration-300"><i class="fab fa-facebook-f text-xl"></i></a>
-                <a href="#" class="text-champagne hover:text-gold transition duration-300"><i class="fab fa-instagram text-xl"></i></a>
+    <footer class="bg-dark text-champagne py-16 text-center border-t border-gold/20">
+        <div class="max-w-4xl mx-auto px-6 fade-in">
+            <h2 class="font-serif text-4xl mb-6 font-bold text-gold">Thắng & Hà</h2>
+            <p class="font-body text-sm tracking-[0.3em] opacity-90 mb-8 font-semibold uppercase">Mãi Mãi Một Tình Yêu</p>
+            <div class="flex justify-center space-x-8 mb-10">
+                <a href="#" class="text-champagne hover:text-gold transition-colors duration-300 transform hover:scale-110"><i class="fab fa-facebook-f text-2xl"></i></a>
+                <a href="#" class="text-champagne hover:text-gold transition-colors duration-300 transform hover:scale-110"><i class="fab fa-instagram text-2xl"></i></a>
             </div>
-            <p class="font-body text-xs opacity-60">&copy; 2026 Kỷ niệm ngày cưới Nguyễn Văn Thắng & Phan Ngọc Hà. Thiết kế với sự chân thành.</p>
+            <p class="font-body text-sm opacity-60 font-light">&copy; Kỷ niệm ngày cưới Nguyễn Văn Thắng & Phan Ngọc Hà. Thiết kế với sự chân thành.</p>
         </div>
     </footer>
 
@@ -269,53 +260,48 @@
         const navbar = document.getElementById('navbar');
         const navBrand = document.getElementById('nav-brand');
         const navLinks = document.getElementById('nav-links');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         
         window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
-                navbar.classList.add('bg-white', 'shadow-md', 'py-2');
+                navbar.classList.add('bg-white/95', 'backdrop-blur-sm', 'shadow-md', 'py-3');
                 navbar.classList.remove('py-4');
-                navBrand.classList.remove('text-white');
+                navBrand.classList.remove('text-white', 'drop-shadow-md');
                 navBrand.classList.add('text-dark');
-                navLinks.classList.remove('text-white');
+                navLinks.classList.remove('text-white', 'drop-shadow-md');
                 navLinks.classList.add('text-dark');
+                mobileMenuBtn.classList.remove('text-white');
+                mobileMenuBtn.classList.add('text-dark');
             } else {
-                navbar.classList.remove('bg-white', 'shadow-md', 'py-2');
+                navbar.classList.remove('bg-white/95', 'backdrop-blur-sm', 'shadow-md', 'py-3');
                 navbar.classList.add('py-4');
-                navBrand.classList.add('text-white');
+                navBrand.classList.add('text-white', 'drop-shadow-md');
                 navBrand.classList.remove('text-dark');
-                navLinks.classList.add('text-white');
+                navLinks.classList.add('text-white', 'drop-shadow-md');
                 navLinks.classList.remove('text-dark');
+                mobileMenuBtn.classList.add('text-white');
+                mobileMenuBtn.classList.remove('text-dark');
             }
         });
 
-        // Fade In Intersection Observer
+        // Intersection Observer for Smooth Fade-In Effects
         const fadeElements = document.querySelectorAll('.fade-in');
         const observerOptions = {
             root: null,
             rootMargin: '0px',
-            threshold: 0.1
+            threshold: 0.15
         };
 
         const observer = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
+                    observer.unobserve(entry.target); // Stop observing once visible
                 }
             });
         }, observerOptions);
 
         fadeElements.forEach(el => observer.observe(el));
-
-        // Smooth Scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
     </script>
 </body>
 </html>
