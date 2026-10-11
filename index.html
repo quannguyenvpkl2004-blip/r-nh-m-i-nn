@@ -1,635 +1,298 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nhím Scanner™</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kỷ Niệm Tình Yêu | Thắng & Hà</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: '#FAF9F6', // Creamy white
+                        champagne: '#E5D3B3', // Soft champagne
+                        gold: '#D4AF37', // Luxurious gold for accents
+                        dark: '#2C2519', // Dark brown/charcoal for text
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
 
-<style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+    <style>
+        /* Custom Styles for Luxury Feel */
+        body {
+            background-color: #FAF9F6;
+            color: #2C2519;
+            overflow-x: hidden;
+        }
 
-body {
-    min-height: 100vh;
-    font-family: Arial, sans-serif;
-    background:
-        radial-gradient(circle at top, #34104f, #100518 55%, #050208);
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow-x: hidden;
-}
+        .text-gradient-gold {
+            background: linear-gradient(to right, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
 
-.container {
-    width: min(92%, 430px);
-    padding: 28px 22px;
-    border: 1px solid rgba(255,255,255,.15);
-    border-radius: 25px;
-    background: rgba(255,255,255,.07);
-    backdrop-filter: blur(15px);
-    box-shadow: 0 20px 70px rgba(0,0,0,.5);
-    text-align: center;
-}
+        .border-gold-gradient {
+            border-image: linear-gradient(to right, #BF953F, #FCF6BA, #B38728) 1;
+        }
 
-.logo {
-    font-size: 48px;
-    margin-bottom: 8px;
-}
+        .bg-gold-gradient {
+        /* bg-gold-gradient {
+            background: linear-gradient(135deg, #E5D3B3 0%, #D4AF37 50%, #B38728 100%);
+        } */
+        /* Hero Image Parallax */
+        .hero-section {
+            background-image: linear-gradient(rgba(44, 37, 25, 0.4), rgba(44, 37, 25, 0.4)), url('IMG_9796.jpg');
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
 
-h1 {
-    font-size: 25px;
-    margin-bottom: 7px;
-}
+        /* Fade In Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-.subtitle {
-    color: #bbb;
-    font-size: 14px;
-    margin-bottom: 25px;
-}
+        /* Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .gallery-item {
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            position: relative;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+        }
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
 
-input {
-    width: 100%;
-    padding: 15px;
-    border: none;
-    outline: none;
-    border-radius: 14px;
-    background: rgba(255,255,255,.1);
-    color: white;
-    font-size: 16px;
-    text-align: center;
-    margin-bottom: 12px;
-}
-
-input::placeholder {
-    color: #999;
-}
-
-button {
-    width: 100%;
-    border: none;
-    padding: 15px;
-    border-radius: 14px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    background: linear-gradient(135deg, #ff4f9a, #9d4edd);
-    color: white;
-    transition: .2s;
-}
-
-button:active {
-    transform: scale(.96);
-}
-
-.hidden {
-    display: none;
-}
-
-/* SCANNING */
-
-.scanner {
-    margin-top: 20px;
-}
-
-.radar {
-    width: 150px;
-    height: 150px;
-    margin: 10px auto 25px;
-    border-radius: 50%;
-    border: 2px solid #ff4f9a;
-    position: relative;
-    overflow: hidden;
-    background:
-        radial-gradient(circle, transparent 20%, rgba(255,79,154,.08) 21%, transparent 22%),
-        radial-gradient(circle, transparent 45%, rgba(255,79,154,.08) 46%, transparent 47%);
-}
-
-.radar::before {
-    content: "";
-    position: absolute;
-    width: 50%;
-    height: 2px;
-    background: #ff4f9a;
-    top: 50%;
-    left: 50%;
-    transform-origin: left center;
-    animation: scan 1.5s linear infinite;
-    box-shadow: 0 0 15px #ff4f9a;
-}
-
-@keyframes scan {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-.progress-box {
-    width: 100%;
-    height: 12px;
-    background: rgba(255,255,255,.1);
-    border-radius: 20px;
-    overflow: hidden;
-    margin: 15px 0;
-}
-
-.progress {
-    width: 0%;
-    height: 100%;
-    background: linear-gradient(90deg,#ff4f9a,#c77dff);
-    transition: width .15s linear;
-}
-
-.status {
-    font-size: 14px;
-    color: #ddd;
-    min-height: 20px;
-}
-
-/* TERMINAL */
-
-.terminal {
-    margin-top: 20px;
-    text-align: left;
-    background: #050505;
-    border-radius: 12px;
-    padding: 15px;
-    font-family: monospace;
-    font-size: 12px;
-    color: #61ff8b;
-    height: 130px;
-    overflow: hidden;
-}
-
-.line {
-    margin-bottom: 6px;
-}
-
-/* RESULT */
-
-.result {
-    animation: appear .7s ease;
-}
-
-@keyframes appear {
-    from {
-        opacity: 0;
-        transform: translateY(20px) scale(.95);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-.result-title {
-    font-size: 28px;
-    margin-bottom: 8px;
-}
-
-.name {
-    color: #ff79b0;
-}
-
-.score {
-    font-size: 65px;
-    font-weight: 900;
-    margin: 15px 0;
-    background: linear-gradient(135deg,#ff70a6,#c77dff);
-    -webkit-background-clip: text;
-    color: transparent;
-}
-
-.stat {
-    text-align: left;
-    margin: 13px 0;
-}
-
-.stat-top {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-    margin-bottom: 6px;
-}
-
-.bar {
-    height: 9px;
-    background: rgba(255,255,255,.1);
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.fill {
-    height: 100%;
-    border-radius: 10px;
-    background: linear-gradient(90deg,#ff4f9a,#c77dff);
-}
-
-.message {
-    margin: 22px 0;
-    padding: 18px;
-    border-radius: 16px;
-    background: rgba(255,79,154,.1);
-    border: 1px solid rgba(255,79,154,.2);
-    line-height: 1.6;
-}
-
-.footer {
-    margin-top: 18px;
-    color: #777;
-    font-size: 11px;
-}
-
-/* HEARTS */
-
-.heart {
-    position: fixed;
-    pointer-events: none;
-    animation: floatUp 4s linear forwards;
-    font-size: 20px;
-}
-
-@keyframes floatUp {
-    from {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-    }
-    to {
-        transform: translateY(-100vh) scale(1.7);
-        opacity: 0;
-    }
-}
-</style>
+        /* Elegant Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #D4AF37;
+        }
+        .divider:not(:empty)::before {
+            margin-right: .5em;
+        }
+        .divider:not(:empty)::after {
+            margin-left: .5em;
+        }
+    </style>
 </head>
+<body class="font-sans antialiased selection:bg-gold selection:text-white">
 
-<body>
-
-<div class="container">
-
-    <!-- START -->
-    <div id="start">
-
-        <div class="logo">💗</div>
-
-        <h1>NHÍM SCANNER™</h1>
-
-        <div class="subtitle">
-            Hệ thống phân tích người yêu thế hệ mới
-        </div>
-
-        <input
-            id="nameInput"
-            type="text"
-            placeholder="Nhập tên người cần quét..."
-        >
-
-        <button onclick="startScan()">
-            🔍 BẮT ĐẦU QUÉT
-        </button>
-
-        <div class="footer">
-            ⚠️ Kết quả chỉ mang tính chất giải trí
-        </div>
-
-    </div>
-
-
-    <!-- SCANNING -->
-    <div id="scanning" class="hidden">
-
-        <div class="logo">🛰️</div>
-
-        <h1>ĐANG QUÉT...</h1>
-
-        <div class="scanner">
-
-            <div class="radar"></div>
-
-            <div id="status" class="status">
-                Đang khởi động hệ thống...
+    <nav class="fixed w-full z-50 transition-all duration-300 py-4 px-6 md:px-12" id="navbar">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="#" class="font-serif text-2xl md:text-3xl text-white tracking-widest drop-shadow-md" id="nav-brand">T & H</a>
+            <div class="hidden md:flex space-x-8 text-sm uppercase tracking-widest text-white drop-shadow-md" id="nav-links">
+                <a href="#home" class="hover:text-gold transition duration-300">Trang chủ</a>
+                <a href="#story" class="hover:text-gold transition duration-300">Chuyện tình</a>
+                <a href="#gallery" class="hover:text-gold transition duration-300">Thư viện ảnh</a>
             </div>
-
-            <div class="progress-box">
-                <div id="progress" class="progress"></div>
-            </div>
-
-            <div class="terminal" id="terminal"></div>
-
-        </div>
-
-    </div>
-
-
-    <!-- RESULT -->
-    <div id="result" class="hidden">
-
-        <div class="result">
-
-            <div class="logo">💕</div>
-
-            <div class="result-title">
-                ĐÃ QUÉT XONG
-            </div>
-
-            <div>
-                Đối tượng:
-                <span id="resultName" class="name"></span>
-            </div>
-
-            <div class="score">
-                99.9%
-            </div>
-
-            <div class="subtitle">
-                MỨC ĐỘ ĐÁNG YÊU
-            </div>
-
-
-            <div class="stat">
-
-                <div class="stat-top">
-                    <span>🥺 Cần được dỗ</span>
-                    <span>100%</span>
-                </div>
-
-                <div class="bar">
-                    <div class="fill" style="width:100%"></div>
-                </div>
-
-            </div>
-
-
-            <div class="stat">
-
-                <div class="stat-top">
-                    <span>😤 Hay dỗi</span>
-                    <span>87%</span>
-                </div>
-
-                <div class="bar">
-                    <div class="fill" style="width:87%"></div>
-                </div>
-
-            </div>
-
-
-            <div class="stat">
-
-                <div class="stat-top">
-                    <span>😂 Độ nhây</span>
-                    <span>94%</span>
-                </div>
-
-                <div class="bar">
-                    <div class="fill" style="width:94%"></div>
-                </div>
-
-            </div>
-
-
-            <div class="stat">
-
-                <div class="stat-top">
-                    <span>❤️ Yêu Wân</span>
-                    <span>100%</span>
-                </div>
-
-                <div class="bar">
-                    <div class="fill" style="width:100%"></div>
-                </div>
-
-            </div>
-
-
-            <div class="message">
-
-                🔬 <b>KẾT LUẬN CỦA HỆ THỐNG</b>
-
-                <br><br>
-
-                Đối tượng có dấu hiệu:
-
-                <br>
-
-                ❤️ Rất đáng yêu<br>
-                😤 Hơi hay dỗi<br>
-                🥺 Cần được dỗ thường xuyên<br>
-                🍜 Có khả năng rủ người yêu đi ăn<br>
-                💕 Và đặc biệt...
-
-                <br><br>
-
-                <b>
-                    KHÔNG ĐƯỢC PHÉP ĐỂ WÂN MỘT MÌNH QUÁ LÂU.
-                </b>
-
-            </div>
-
-
-            <button onclick="restart()">
-                🔄 QUÉT LẠI
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-white focus:outline-none" id="mobile-menu-btn">
+                <i class="fas fa-bars text-2xl"></i>
             </button>
+        </div>
+    </nav>
 
-            <div class="footer">
-                NHÍM SCANNER™ — Powered by Wân Corporation
+    <header id="home" class="hero-section h-screen w-full flex flex-col items-center justify-center relative">
+        <div class="text-center px-4 z-10 fade-in">
+            <h3 class="font-sans text-champagne tracking-[0.3em] uppercase text-sm md:text-lg mb-4 shadow-black">Kỷ niệm ngày cưới</h3>
+            <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl text-white mb-6 drop-shadow-lg">Nguyễn Văn Thắng <br> <span class="text-4xl md:text-5xl italic text-champagne">&</span> <br> Phan Ngọc Hà</h1>
+            <p class="font-serif text-xl md:text-2xl text-white italic mt-6 max-w-2xl mx-auto drop-shadow-md">
+                "Hành trình của tình yêu và sự gắn kết trường tồn"
+            </p>
+        </div>
+        
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-white">
+            <a href="#quote"><i class="fas fa-chevron-down text-2xl opacity-70 hover:opacity-100 hover:text-gold transition duration-300"></i></a>
+        </div>
+    </header>
+
+    <section id="quote" class="py-24 bg-cream text-center px-6">
+        <div class="max-w-4xl mx-auto fade-in">
+            <i class="fas fa-quote-left text-4xl text-gold mb-6 opacity-50"></i>
+            <h2 class="font-serif text-3xl md:text-4xl leading-relaxed italic text-dark">
+                "Tình yêu không phải là nhìn chằm chằm vào nhau, mà là cùng nhau nhìn về một hướng."
+            </h2>
+            <p class="mt-6 font-sans text-sm uppercase tracking-widest text-gray-500">— Antoine de Saint-Exupéry —</p>
+            <div class="divider text-gold text-2xl mt-12 w-64 mx-auto">&#10084;</div>
+        </div>
+    </section>
+
+    <section id="story" class="py-20 bg-white">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="font-serif text-4xl md:text-5xl text-dark mb-4">Câu Chuyện Tình Yêu</h2>
+                <p class="font-sans text-gray-500 tracking-wider">Hành trình chúng mình đi cùng nhau</p>
             </div>
 
+            <div class="flex flex-col md:flex-row items-center gap-12 fade-in">
+                <div class="w-full md:w-1/2">
+                    <div class="relative rounded-t-full overflow-hidden border-4 border-champagne p-2">
+                        <img src="Chân dung áo dài bên bó hoa.png" alt="Our Story" class="w-full h-[500px] object-cover rounded-t-full">
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 space-y-6 text-center md:text-left">
+                    <h3 class="font-serif text-3xl text-gradient-gold">Ngày Ấy & Bây Giờ</h3>
+                    <p class="font-sans text-gray-600 leading-relaxed text-justify">
+                        Từ những ngày đầu tiên gặp gỡ, ánh mắt chạm nhau đã thắp lên một ngọn lửa ấm áp trong tim. Trải qua bao nhiêu thăng trầm, vui buồn của cuộc sống, cái nắm tay ngày ấy chỉ càng thêm chặt. 
+                    </p>
+                    <p class="font-sans text-gray-600 leading-relaxed text-justify">
+                        Hôm nay, nhìn lại chặng đường đã qua, chúng ta tự hào vì đã luôn là điểm tựa vững chắc cho đối phương. Lễ kỷ niệm này không chỉ là cột mốc thời gian, mà còn là lời khẳng định tình yêu bất diệt mà Thắng và Hà dành cho nhau.
+                    </p>
+                    <button class="mt-8 px-8 py-3 border border-gold text-gold hover:bg-gold hover:text-white transition duration-300 font-sans tracking-widest text-sm">
+                        ĐỌC THÊM
+                    </button>
+                </div>
+            </div>
         </div>
+    </section>
 
-    </div>
+    <section id="gallery" class="py-24 bg-cream">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="font-serif text-4xl md:text-5xl text-dark mb-4">Khoảnh Khắc Đáng Nhớ</h2>
+                <div class="h-1 w-24 bg-gold-gradient mx-auto"></div>
+            </div>
 
-</div>
+            <div class="gallery-grid fade-in">
+                <!-- Gallery Items -->
+                <div class="gallery-item h-64 md:h-80">
+                    <img src="Vietnamese Engagement Portrait with Pink Roses (1).png" alt="Đôi uyên ương bên hoa">
+                </div>
+                <div class="gallery-item h-64 md:h-80">
+                    <img src="Vietnamese Engagement Portrait in Green Drapery.png" alt="Cặp đôi rạng rỡ">
+                </div>
+                <div class="gallery-item h-64 md:h-80">
+                    <img src="Chân dung đôi uyên ương bên rèm xanh (1).png" alt="Chân dung tình yêu">
+                </div>
+                <div class="gallery-item h-64 md:h-80">
+                    <img src="Đại gia đình sum vầy bên lễ vật hoa quả.png" alt="Đại gia đình sum vầy">
+                </div>
+                <div class="gallery-item h-64 md:h-80">
+                    <img src="Khoảnh khắc vui nhộn trước lễ cưới.png" alt="Khoảnh khắc vui nhộn">
+                </div>
+                <div class="gallery-item h-64 md:h-80">
+                    <img src="Khoảnh Khắc Phát Biểu Lễ Đám Hỏi.png" alt="Phát biểu lễ đám hỏi">
+                </div>
+                <div class="gallery-item h-64 md:h-80">
+                    <img src="Khoảnh khắc phát biểu trong lễ cưới.png" alt="Đại diện gia đình phát biểu">
+                </div>
+                <div class="gallery-item h-64 md:h-80">
+                    <img src="Chân dung đôi uyên ương bên rèm xanh.png" alt="Hạnh phúc viên mãn">
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <footer class="bg-dark text-champagne py-12 text-center">
+        <div class="max-w-4xl mx-auto px-6">
+            <h2 class="font-serif text-3xl mb-4">Thắng & Hà</h2>
+            <p class="font-sans text-sm tracking-widest opacity-70 mb-6">MÃI MÃI MỘT TÌNH YÊU</p>
+            <div class="flex justify-center space-x-6 mb-8">
+                <a href="#" class="text-champagne hover:text-gold transition duration-300"><i class="fab fa-facebook-f text-xl"></i></a>
+                <a href="#" class="text-champagne hover:text-gold transition duration-300"><i class="fab fa-instagram text-xl"></i></a>
+            </div>
+            <p class="font-sans text-xs opacity-50">&copy; 2026 Kỷ niệm ngày cưới Nguyễn Văn Thắng & Phan Ngọc Hà. Thiết kế với sự chân thành.</p>
+        </div>
+    </footer>
 
-<script>
-
-function startScan() {
-
-    let name =
-        document.getElementById("nameInput").value.trim();
-
-    if (!name) {
-        name = "Nhím";
-    }
-
-    document.getElementById("start")
-        .classList.add("hidden");
-
-    document.getElementById("scanning")
-        .classList.remove("hidden");
-
-    document.getElementById("resultName")
-        .innerText = name;
-
-    scan();
-
-}
-
-
-function scan() {
-
-    let progress = 0;
-
-    const progressBar =
-        document.getElementById("progress");
-
-    const status =
-        document.getElementById("status");
-
-    const terminal =
-        document.getElementById("terminal");
-
-    const messages = [
-
-        "Đang kết nối với đối tượng...",
-
-        "Đang phân tích tính cách...",
-
-        "Đang kiểm tra mức độ đáng yêu...",
-
-        "Đang quét mức độ dỗi...",
-
-        "Đang kiểm tra khả năng nhớ người yêu...",
-
-        "Đang phân tích dữ liệu tình cảm...",
-
-        "⚠️ Phát hiện lượng đáng yêu bất thường...",
-
-        "Đang kiểm tra mức độ yêu Wân...",
-
-        "99%...",
-
-        "Hoàn tất."
-    ];
-
-    const interval =
-        setInterval(() => {
-
-            progress += Math.random() * 4;
-
-            if (progress >= 100) {
-
-                progress = 100;
-
-                clearInterval(interval);
-
-                progressBar.style.width = "100%";
-
-                status.innerText =
-                    "✅ Phân tích hoàn tất!";
-
-                setTimeout(showResult, 1000);
-
-                return;
+    <script>
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        const navBrand = document.getElementById('nav-brand');
+        const navLinks = document.getElementById('nav-links');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-white', 'shadow-md', 'py-2');
+                navbar.classList.remove('py-4');
+                navBrand.classList.remove('text-white');
+                navBrand.classList.add('text-dark');
+                navLinks.classList.remove('text-white');
+                navLinks.classList.add('text-dark');
+            } else {
+                navbar.classList.remove('bg-white', 'shadow-md', 'py-2');
+                navbar.classList.add('py-4');
+                navBrand.classList.add('text-white');
+                navBrand.classList.remove('text-dark');
+                navLinks.classList.add('text-white');
+                navLinks.classList.remove('text-dark');
             }
+        });
 
-            progressBar.style.width =
-                progress + "%";
+        // Fade In Intersection Observer
+        const fadeElements = document.querySelectorAll('.fade-in');
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
 
-            let index =
-                Math.floor(
-                    progress / 10
-                );
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
 
-            status.innerText =
-                messages[Math.min(index, messages.length - 1)];
+        fadeElements.forEach(el => observer.observe(el));
 
-            if (Math.random() > .55) {
-
-                let line =
-                    document.createElement("div");
-
-                line.className = "line";
-
-                line.innerText =
-                    "> " +
-                    messages[
-                        Math.floor(
-                            Math.random() *
-                            messages.length
-                        )
-                    ];
-
-                terminal.appendChild(line);
-
-                terminal.scrollTop =
-                    terminal.scrollHeight;
-            }
-
-        }, 180);
-
-}
-
-
-function showResult() {
-
-    document.getElementById("scanning")
-        .classList.add("hidden");
-
-    document.getElementById("result")
-        .classList.remove("hidden");
-
-    createHearts();
-
-}
-
-
-function createHearts() {
-
-    for (let i = 0; i < 25; i++) {
-
-        setTimeout(() => {
-
-            const heart =
-                document.createElement("div");
-
-            heart.className = "heart";
-
-            heart.innerText =
-                ["❤️","💕","💗","💖","💘"]
-                [Math.floor(Math.random() * 5)];
-
-            heart.style.left =
-                Math.random() * 100 + "vw";
-
-            heart.style.bottom = "-30px";
-
-            heart.style.animationDuration =
-                (3 + Math.random() * 3) + "s";
-
-            document.body.appendChild(heart);
-
-            setTimeout(() => {
-                heart.remove();
-            }, 6000);
-
-        }, i * 100);
-
-    }
-
-}
-
-
-function restart() {
-
-    document.getElementById("result")
-        .classList.add("hidden");
-
-    document.getElementById("start")
-        .classList.remove("hidden");
-
-    document.getElementById("nameInput")
-        .value = "";
-
-}
-
-</script>
-
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
