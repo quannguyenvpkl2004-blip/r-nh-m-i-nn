@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script>
@@ -15,14 +15,14 @@
             theme: {
                 extend: {
                     colors: {
-                        cream: '#FAF9F6', // Creamy white
-                        champagne: '#E5D3B3', // Soft champagne
-                        gold: '#D4AF37', // Luxurious gold for accents
-                        dark: '#2C2519', // Dark brown/charcoal for text
+                        cream: '#FAF9F6',
+                        champagne: '#E5D3B3',
+                        gold: '#D4AF37',
+                        dark: '#2C2519',
                     },
                     fontFamily: {
-                        serif: ['"Cormorant Garamond"', 'serif'],
-                        sans: ['Montserrat', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
+                        body: ['"Lora"', 'serif'],
                     }
                 }
             }
@@ -35,6 +35,7 @@
             background-color: #FAF9F6;
             color: #2C2519;
             overflow-x: hidden;
+            font-family: 'Lora', serif;
         }
 
         .text-gradient-gold {
@@ -50,17 +51,22 @@
         }
 
         .bg-gold-gradient {
-        /* bg-gold-gradient {
             background: linear-gradient(135deg, #E5D3B3 0%, #D4AF37 50%, #B38728 100%);
-        } */
+        }
+
+        /* Highlight Text */
+        .text-gold-pop {
+            color: #D4AF37;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .text-shadow-light {
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+        }
+
         /* Hero Image Parallax */
         .hero-section {
-            background-image: linear-gradient(rgba(44, 37, 25, 0.4), rgba(44, 37, 25, 0.4)), url('IMG_9796.jpg');
-            background-attachment: fixed;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
+            background-image: linear-gradient(rgba(44, 37, 25, 0.5), rgba(44, 37, 25, 0.5)), url('IMG_9796.jpg');
 
         /* Fade In Animation */
         .fade-in {
@@ -73,31 +79,44 @@
             transform: translateY(0);
         }
 
-        /* Gallery Grid */
+        /* Gallery Grid using CSS Columns (Masonry effect) */
         .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
+            column-count: 1;
+            column-gap: 1.5rem;
         }
+        @media (min-width: 640px) {
+            .gallery-grid { column-count: 2; }
+        }
+        @media (min-width: 1024px) {
+            .gallery-grid { column-count: 3; }
+        }
+        
         .gallery-item {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+            display: block;
+            width: 100%;
             overflow: hidden;
             border-radius: 8px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.05);
             transition: transform 0.4s ease, box-shadow 0.4s ease;
             position: relative;
         }
+        
         .gallery-item img {
             width: 100%;
-            height: 100%;
+            height: auto; /* Giữ đúng tỷ lệ ảnh, không bị méo/đè */
+            display: block;
             object-fit: cover;
             transition: transform 0.6s ease;
         }
+        
         .gallery-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
         }
         .gallery-item:hover img {
-            transform: scale(1.05);
+            transform: scale(1.03);
         }
 
         /* Elegant Divider */
@@ -139,9 +158,13 @@
 
     <header id="home" class="hero-section h-screen w-full flex flex-col items-center justify-center relative">
         <div class="text-center px-4 z-10 fade-in">
-            <h3 class="font-sans text-champagne tracking-[0.3em] uppercase text-sm md:text-lg mb-4 shadow-black">Kỷ niệm ngày cưới</h3>
-            <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl text-white mb-6 drop-shadow-lg">Nguyễn Văn Thắng <br> <span class="text-4xl md:text-5xl italic text-champagne">&</span> <br> Phan Ngọc Hà</h1>
-            <p class="font-serif text-xl md:text-2xl text-white italic mt-6 max-w-2xl mx-auto drop-shadow-md">
+            <h3 class="font-body text-champagne tracking-[0.3em] uppercase text-sm md:text-lg mb-4 text-shadow-light font-bold">Kỷ niệm ngày cưới</h3>
+            <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl font-bold text-gold-pop mb-6 leading-tight">
+                Nguyễn Văn Thắng <br> 
+                <span class="text-4xl md:text-5xl italic text-champagne">&</span> <br> 
+                Phan Ngọc Hà
+            </h1>
+            <p class="font-body text-xl md:text-2xl text-white italic mt-6 max-w-2xl mx-auto text-shadow-light">
                 "Hành trình của tình yêu và sự gắn kết trường tồn"
             </p>
         </div>
@@ -155,10 +178,10 @@
     <section id="quote" class="py-24 bg-cream text-center px-6">
         <div class="max-w-4xl mx-auto fade-in">
             <i class="fas fa-quote-left text-4xl text-gold mb-6 opacity-50"></i>
-            <h2 class="font-serif text-3xl md:text-4xl leading-relaxed italic text-dark">
+            <h2 class="font-serif text-3xl md:text-4xl leading-relaxed italic text-dark font-semibold">
                 "Tình yêu không phải là nhìn chằm chằm vào nhau, mà là cùng nhau nhìn về một hướng."
             </h2>
-            <p class="mt-6 font-sans text-sm uppercase tracking-widest text-gray-500">— Antoine de Saint-Exupéry —</p>
+            <p class="mt-6 font-body text-sm uppercase tracking-widest text-gray-500 font-bold">— Antoine de Saint-Exupéry —</p>
             <div class="divider text-gold text-2xl mt-12 w-64 mx-auto">&#10084;</div>
         </div>
     </section>
@@ -166,8 +189,8 @@
     <section id="story" class="py-20 bg-white">
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center mb-16 fade-in">
-                <h2 class="font-serif text-4xl md:text-5xl text-dark mb-4">Câu Chuyện Tình Yêu</h2>
-                <p class="font-sans text-gray-500 tracking-wider">Hành trình chúng mình đi cùng nhau</p>
+                <h2 class="font-serif text-4xl md:text-5xl text-dark mb-4 font-bold">Câu Chuyện Tình Yêu</h2>
+                <p class="font-body text-gray-500 tracking-wider text-lg">Hành trình chúng mình đi cùng nhau</p>
             </div>
 
             <div class="flex flex-col md:flex-row items-center gap-12 fade-in">
@@ -177,14 +200,14 @@
                     </div>
                 </div>
                 <div class="w-full md:w-1/2 space-y-6 text-center md:text-left">
-                    <h3 class="font-serif text-3xl text-gradient-gold">Ngày Ấy & Bây Giờ</h3>
-                    <p class="font-sans text-gray-600 leading-relaxed text-justify">
+                    <h3 class="font-serif text-3xl font-bold text-gradient-gold">Ngày Ấy & Bây Giờ</h3>
+                    <p class="font-body text-gray-700 leading-relaxed text-justify text-lg">
                         Từ những ngày đầu tiên gặp gỡ, ánh mắt chạm nhau đã thắp lên một ngọn lửa ấm áp trong tim. Trải qua bao nhiêu thăng trầm, vui buồn của cuộc sống, cái nắm tay ngày ấy chỉ càng thêm chặt. 
                     </p>
-                    <p class="font-sans text-gray-600 leading-relaxed text-justify">
+                    <p class="font-body text-gray-700 leading-relaxed text-justify text-lg">
                         Hôm nay, nhìn lại chặng đường đã qua, chúng ta tự hào vì đã luôn là điểm tựa vững chắc cho đối phương. Lễ kỷ niệm này không chỉ là cột mốc thời gian, mà còn là lời khẳng định tình yêu bất diệt mà Thắng và Hà dành cho nhau.
                     </p>
-                    <button class="mt-8 px-8 py-3 border border-gold text-gold hover:bg-gold hover:text-white transition duration-300 font-sans tracking-widest text-sm">
+                    <button class="mt-8 px-8 py-3 border-2 border-gold text-gold hover:bg-gold hover:text-white transition duration-300 font-body tracking-widest text-sm font-bold">
                         ĐỌC THÊM
                     </button>
                 </div>
@@ -195,34 +218,34 @@
     <section id="gallery" class="py-24 bg-cream">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16 fade-in">
-                <h2 class="font-serif text-4xl md:text-5xl text-dark mb-4">Khoảnh Khắc Đáng Nhớ</h2>
+                <h2 class="font-serif text-4xl md:text-5xl text-dark mb-4 font-bold">Khoảnh Khắc Đáng Nhớ</h2>
                 <div class="h-1 w-24 bg-gold-gradient mx-auto"></div>
             </div>
 
             <div class="gallery-grid fade-in">
                 <!-- Gallery Items -->
-                <div class="gallery-item h-64 md:h-80">
+                <div class="gallery-item">
                     <img src="Vietnamese Engagement Portrait with Pink Roses (1).png" alt="Đôi uyên ương bên hoa">
                 </div>
-                <div class="gallery-item h-64 md:h-80">
+                <div class="gallery-item">
                     <img src="Vietnamese Engagement Portrait in Green Drapery.png" alt="Cặp đôi rạng rỡ">
                 </div>
-                <div class="gallery-item h-64 md:h-80">
+                <div class="gallery-item">
                     <img src="Chân dung đôi uyên ương bên rèm xanh (1).png" alt="Chân dung tình yêu">
                 </div>
-                <div class="gallery-item h-64 md:h-80">
+                <div class="gallery-item">
                     <img src="Đại gia đình sum vầy bên lễ vật hoa quả.png" alt="Đại gia đình sum vầy">
                 </div>
-                <div class="gallery-item h-64 md:h-80">
+                <div class="gallery-item">
                     <img src="Khoảnh khắc vui nhộn trước lễ cưới.png" alt="Khoảnh khắc vui nhộn">
                 </div>
-                <div class="gallery-item h-64 md:h-80">
+                <div class="gallery-item">
                     <img src="Khoảnh Khắc Phát Biểu Lễ Đám Hỏi.png" alt="Phát biểu lễ đám hỏi">
                 </div>
-                <div class="gallery-item h-64 md:h-80">
+                <div class="gallery-item">
                     <img src="Khoảnh khắc phát biểu trong lễ cưới.png" alt="Đại diện gia đình phát biểu">
                 </div>
-                <div class="gallery-item h-64 md:h-80">
+                <div class="gallery-item">
                     <img src="Chân dung đôi uyên ương bên rèm xanh.png" alt="Hạnh phúc viên mãn">
                 </div>
             </div>
@@ -231,13 +254,13 @@
 
     <footer class="bg-dark text-champagne py-12 text-center">
         <div class="max-w-4xl mx-auto px-6">
-            <h2 class="font-serif text-3xl mb-4">Thắng & Hà</h2>
-            <p class="font-sans text-sm tracking-widest opacity-70 mb-6">MÃI MÃI MỘT TÌNH YÊU</p>
+            <h2 class="font-serif text-4xl mb-4 font-bold text-gold">Thắng & Hà</h2>
+            <p class="font-body text-sm tracking-widest opacity-80 mb-6 font-bold">MÃI MÃI MỘT TÌNH YÊU</p>
             <div class="flex justify-center space-x-6 mb-8">
                 <a href="#" class="text-champagne hover:text-gold transition duration-300"><i class="fab fa-facebook-f text-xl"></i></a>
                 <a href="#" class="text-champagne hover:text-gold transition duration-300"><i class="fab fa-instagram text-xl"></i></a>
             </div>
-            <p class="font-sans text-xs opacity-50">&copy; 2026 Kỷ niệm ngày cưới Nguyễn Văn Thắng & Phan Ngọc Hà. Thiết kế với sự chân thành.</p>
+            <p class="font-body text-xs opacity-60">&copy; 2026 Kỷ niệm ngày cưới Nguyễn Văn Thắng & Phan Ngọc Hà. Thiết kế với sự chân thành.</p>
         </div>
     </footer>
 
